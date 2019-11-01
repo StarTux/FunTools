@@ -60,10 +60,10 @@
       <version>1.18.2</version>
       <scope>provided</scope>
     </dependency>
-    <!-- ItemMarker -->
+    <!-- Dirty -->
     <dependency>
-      <groupId>com.cavetale.itemmarker</groupId>
-      <artifactId>itemmarker</artifactId>
+      <groupId>com.cavetale.dirty</groupId>
+      <artifactId>dirty</artifactId>
       <version>0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>

@@ -5,5 +5,5 @@ api-version: 1.13
 description: Custom Tools for Survival Players
 author: StarTux
 website: https://cavetale.com
-depend: [ItemMarker]
+depend: [Dirty]
 softdepend: []

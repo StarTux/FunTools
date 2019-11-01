@@ -1,9 +1,11 @@
 package com.cavetale.funtools;
 
-import com.cavetale.itemmarker.ItemMarker;
+import com.cavetale.dirty.Dirty;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -31,7 +33,7 @@ final class FunToolsListener implements Listener {
             return;
         }
         // The candy item from the Halloween eventu34
-        if (ItemMarker.hasCustomId(item, "halloween_candy")) {
+        if (hasCustomId(item, "halloween_candy")) {
             giveHalloweenPotionEffect(event.getPlayer());
             return;
         }
@@ -55,5 +57,27 @@ final class FunToolsListener implements Listener {
         int duration = 20 * 30 + ThreadLocalRandom.current().nextInt(40 * 30);
         player.addPotionEffect(new PotionEffect(pet, duration, amplifier));
         player.playSound(player.getEyeLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.MASTER, 0.25f, 2.0f);
+    }
+
+    // Legacy
+
+    static <T> Optional<T> getMarker(@NonNull ItemStack item,
+                                     @NonNull String key,
+                                     @NonNull Class<T> clazz) {
+        Optional<Object> tag = Dirty.accessItemNBT(item, false);
+        if (!tag.isPresent()) return Optional.empty();
+        tag = Dirty.getNBT(tag, key);
+        Object result = Dirty.fromNBT(tag);
+        if (!clazz.isInstance(result)) return Optional.empty();
+        return Optional.of(clazz.cast(result));
+    }
+
+    static Optional<String> getCustomId(@NonNull ItemStack item) {
+        return getMarker(item, "cavetale.id", String.class);
+    }
+
+    static boolean hasCustomId(@NonNull ItemStack item,
+                               @NonNull String customId) {
+        return customId.equals(getCustomId(item).orElse(null));
     }
 }
